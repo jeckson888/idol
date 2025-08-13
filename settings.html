@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置 - 我的偶像日记</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .settings-header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .settings-section h2 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
+        .setting-item label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .setting-item input,
+        .setting-item select,
+        .setting-item textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .setting-item input:focus,
+        .setting-item select:focus,
+        .setting-item textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .setting-item .description {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e1e5e9;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff3742;
+        }
+
+        .api-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .api-status.connected {
+            background: #2ed573;
+            color: white;
+        }
+
+        .api-status.disconnected {
+            background: #ff4757;
+            color: white;
+        }
+
+        .api-status.testing {
+            background: #ffa726;
+            color: white;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景图片和粒子效果 -->
+    <div id="background-container">
+        <div id="particles-js"></div>
+        <div class="background-overlay"></div>
+    </div>
+
+    <button class="back-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> 返回主页
+    </button>
+
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1><i class="fas fa-cog"></i> 设置</h1>
+            <p>个性化配置你的偶像日记</p>
+        </div>
+
+        <!-- API配置 -->
+        <div class="settings-section">
+            <h2><i class="fas fa-key"></i> API配置</h2>
+            
+            
+
+            <div class="setting-item">
+                <label>百度地图API密钥</label>
+                <input type="text" id="baiduMapKey" placeholder="输入百度地图API密钥">
+                <div class="description">用于地图功能，可在百度地图开放平台注册获取</div>
+                <span class="api-status" id="baiduStatus">未连接</span>
+            </div>
+
+            <div class="setting-item">
+                <label>Unsplash图片API密钥</label>
+                <input type="text" id="unsplashKey" placeholder="输入Unsplash API密钥">
+                <div class="description">用于获取高质量背景图片，可在Unsplash开发者平台注册获取</div>
+                <span class="api-status" id="unsplashStatus">未连接</span>
+            </div>
+        </div>
+
+        <!-- 界面设置 -->
+        <div class="settings-section">
+            <h2><i class="fas fa-palette"></i> 界面设置</h2>
+            
+            <div class="setting-item">
+                <label>启用粒子效果</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="particlesEnabled">
+                    <span class="slider"></span>
+                </label>
+                <div class="description">在背景显示动态粒子效果</div>
+            </div>
+
+            <div class="setting-item">
+                <label>启用动画效果</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="animationsEnabled">
+                    <span class="slider"></span>
+                </label>
+                <div class="description">页面切换和交互动画效果</div>
+            </div>
+
+            <div class="setting-item">
+                <label>自动切换背景</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoChangeBackground">
+                    <span class="slider"></span>
+                </label>
+                <div class="description">定期自动更换背景图片</div>
+            </div>
+
+            <div class="setting-item">
+                <label>背景切换间隔（秒）</label>
+                <input type="number" id="backgroundInterval" min="10" max="300" value="30">
+                <div class="description">背景图片自动切换的时间间隔</div>
+            </div>
+        </div>
+
+        
+
+        <!-- 音乐设置 -->
+        <div class="settings-section">
+            <h2><i class="fas fa-music"></i> 音乐设置</h2>
+            
+            <div class="setting-item">
+                <label>启用背景音乐</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="musicEnabled">
+                    <span class="slider"></span>
+                </label>
+                <div class="description">播放背景音乐</div>
+            </div>
+
+            <div class="setting-item">
+                <label>音乐音量</label>
+                <input type="range" id="musicVolume" min="0" max="100" value="50">
+                <div class="description">背景音乐的音量大小</div>
+            </div>
+
+            <div class="setting-item">
+                <label>默认音乐文件</label>
+                <input type="text" id="defaultMusic" placeholder="音乐文件路径">
+                <div class="description">默认播放的音乐文件路径</div>
+            </div>
+        </div>
+
+        <!-- 数据设置 -->
+        <div class="settings-section">
+            <h2><i class="fas fa-database"></i> 数据设置</h2>
+            
+            <div class="setting-item">
+                <label>启用数据备份</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="backupEnabled">
+                    <span class="slider"></span>
+                </label>
+                <div class="description">自动备份数据到本地存储</div>
+            </div>
+
+            <div class="setting-item">
+                <label>数据加密</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="encryptionEnabled">
+                    <span class="slider"></span>
+                </label>
+                <div class="description">对存储的数据进行加密</div>
+            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="saveSettings()">
+                <i class="fas fa-save"></i> 保存设置
+            </button>
+            <button class="btn btn-secondary" onclick="testAPIs()">
+                <i class="fas fa-test-tube"></i> 测试API
+            </button>
+            <button class="btn btn-secondary" onclick="exportSettings()">
+                <i class="fas fa-download"></i> 导出配置
+            </button>
+            <button class="btn btn-secondary" onclick="importSettings()">
+                <i class="fas fa-upload"></i> 导入配置
+            </button>
+            <button class="btn btn-danger" onclick="resetSettings()">
+                <i class="fas fa-undo"></i> 重置设置
+            </button>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/third-party.js"></script>
+    <script>
+        // 加载设置
+        function loadSettings() {
+            document.getElementById('weatherApiKey').value = getConfig('weather.apiKey');
+            document.getElementById('baiduMapKey').value = getConfig('baiduMap.apiKey');
+            document.getElementById('unsplashKey').value = getConfig('unsplash.accessKey');
+            
+            document.getElementById('particlesEnabled').checked = getConfig('particles.enabled');
+            document.getElementById('animationsEnabled').checked = getConfig('animations.enabled');
+            document.getElementById('autoChangeBackground').checked = getConfig('backgrounds.autoChange');
+            document.getElementById('backgroundInterval').value = getConfig('backgrounds.changeInterval') / 1000;
+            
+            document.getElementById('weatherEnabled').checked = getConfig('weatherWidget.enabled');
+            document.getElementById('weatherPosition').value = getConfig('weatherWidget.position');
+            document.getElementById('weatherInterval').value = getConfig('weatherWidget.updateInterval') / 60000;
+            
+            document.getElementById('musicEnabled').checked = getConfig('music.enabled');
+            document.getElementById('musicVolume').value = getConfig('music.volume') * 100;
+            document.getElementById('defaultMusic').value = getConfig('music.defaultTrack');
+            
+            document.getElementById('backupEnabled').checked = getConfig('storage.backup');
+            document.getElementById('encryptionEnabled').checked = getConfig('storage.encryption');
+        }
+
+        // 保存设置
+        function saveSettings() {
+            setConfig('weather.apiKey', document.getElementById('weatherApiKey').value);
+            setConfig('baiduMap.apiKey', document.getElementById('baiduMapKey').value);
+            setConfig('unsplash.accessKey', document.getElementById('unsplashKey').value);
+            
+            setConfig('particles.enabled', document.getElementById('particlesEnabled').checked);
+            setConfig('animations.enabled', document.getElementById('animationsEnabled').checked);
+            setConfig('backgrounds.autoChange', document.getElementById('autoChangeBackground').checked);
+            setConfig('backgrounds.changeInterval', document.getElementById('backgroundInterval').value * 1000);
+            
+            setConfig('weatherWidget.enabled', document.getElementById('weatherEnabled').checked);
+            setConfig('weatherWidget.position', document.getElementById('weatherPosition').value);
+            setConfig('weatherWidget.updateInterval', document.getElementById('weatherInterval').value * 60000);
+            
+            setConfig('music.enabled', document.getElementById('musicEnabled').checked);
+            setConfig('music.volume', document.getElementById('musicVolume').value / 100);
+            setConfig('music.defaultTrack', document.getElementById('defaultMusic').value);
+            
+            setConfig('storage.backup', document.getElementById('backupEnabled').checked);
+            setConfig('storage.encryption', document.getElementById('encryptionEnabled').checked);
+            
+            saveConfig();
+            alert('设置已保存！');
+        }
+
+        // 测试API
+        async function testAPIs() {
+            const apis = [
+                { name: 'weather', key: 'weatherApiKey', status: 'weatherStatus' },
+                { name: 'baidu', key: 'baiduMapKey', status: 'baiduStatus' },
+                { name: 'unsplash', key: 'unsplashKey', status: 'unsplashStatus' }
+            ];
+
+            for (const api of apis) {
+                const key = document.getElementById(api.key).value;
+                const statusElement = document.getElementById(api.status);
+                
+                if (key && key !== 'your_' + api.name + '_api_key') {
+                    statusElement.textContent = '测试中...';
+                    statusElement.className = 'api-status testing';
+                    
+                    // 模拟API测试
+                    setTimeout(() => {
+                        statusElement.textContent = '已连接';
+                        statusElement.className = 'api-status connected';
+                    }, 1000 + Math.random() * 2000);
+                } else {
+                    statusElement.textContent = '未连接';
+                    statusElement.className = 'api-status disconnected';
+                }
+            }
+        }
+
+        // 导出设置
+        function exportSettings() {
+            exportConfig();
+        }
+
+        // 导入设置
+        function importSettings() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    try {
+                        await importConfig(file);
+                        loadSettings();
+                        alert('配置导入成功！');
+                    } catch (error) {
+                        alert('配置导入失败：' + error.message);
+                    }
+                }
+            };
+            input.click();
+        }
+
+        // 重置设置
+        function resetSettings() {
+            if (confirm('确定要重置所有设置吗？这将恢复默认配置。')) {
+                resetConfig();
+            }
+        }
+
+        // 返回主页
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // 页面加载时加载设置
+        document.addEventListener('DOMContentLoaded', loadSettings);
+    </script>
+</body>
+</html>

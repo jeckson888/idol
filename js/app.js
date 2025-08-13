@@ -293,7 +293,7 @@ class AppState {
             this.loadProfile();
         } catch (e) {
             console.log('登录失败:', e);
-            alert('用户名或密码错误！\n\n可用账户（本地演示）：\n用户名：demo_user 密码：123456\n用户名：fan_user 密码：123456');
+            // alert('用户名或密码错误！\n\n可用账户（本地演示）：\n用户名：demo_user 密码：123456\n用户名：fan_user 密码：123456');
         }
     }
 

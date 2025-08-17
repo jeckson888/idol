@@ -5,6 +5,82 @@
     box-sizing: border-box;
 }
 
+/* PWA 安装提示样式 */
+.pwa-install-prompt {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    max-width: 350px;
+    width: 90%;
+    animation: slideInUp 0.3s ease;
+}
+
+.pwa-install-content {
+    text-align: center;
+}
+
+.pwa-install-content i {
+    font-size: 2rem;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.pwa-install-content h3 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.pwa-install-content p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.pwa-install-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.pwa-install-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.pwa-install-btn:hover {
+    background: #5a6fd8;
+}
+
+.pwa-dismiss-btn {
+    background: #f0f0f0;
+    color: #666;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.pwa-dismiss-btn:hover {
+    background: #e0e0e0;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #2194ab; /* 移除渐变色，仅作为图片加载前的底色 */
@@ -20,7 +96,25 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-                background: url('img/3.jpg') center/cover no-repeat;
+    background: url('./img/bg.jpg') center/cover no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 备用背景设置 */
+#background-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('./img/bg.jpg') center/cover no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2;
 }
 
 #particles-js {
@@ -252,6 +346,177 @@ body {
     pointer-events: none;
 }
 
+.music-list-btn,
+.music-nav-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.music-list-btn:hover,
+.music-nav-btn:hover {
+    background: #5a6fd8;
+    transform: scale(1.1);
+}
+
+/* 音乐列表弹窗样式 */
+.music-list-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-list-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.music-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #eee;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.music-list-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.music-list-body {
+    padding: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.music-upload-section {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upload-music-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.upload-music-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.music-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.music-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.music-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.music-item.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.music-item-info {
+    flex: 1;
+}
+
+.music-item-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.music-item-duration {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.music-item-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.music-item-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: inherit;
+}
+
+.music-item-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.music-item-btn.delete {
+    color: #ff4757;
+}
+
+.music-item-btn.delete:hover {
+    background: rgba(255, 71, 87, 0.2);
+}
+
 /* 主应用容器 */
 .app-container {
     min-height: 100vh;
@@ -425,15 +690,21 @@ body {
 }
 
 .hero-image {
-    flex: 1;
+    flex: 1.2;
     text-align: center;
 }
 
 .hero-image img {
-    max-width: 100%;
+    max-width: 120%;
     height: auto;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+    transform: scale(1.15);
 }
 
 /* 统计卡片 */
@@ -452,6 +723,46 @@ body {
     backdrop-filter: blur(10px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    /* 调试：添加边框 */
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.stat-card:hover::before {
+    opacity: 0.7;
+}
+
+/* 为每个统计卡片设置不同的背景图片 */
+.stat-card:nth-child(1)::before {
+    background-image: url('./img/22.jpg');
+}
+
+.stat-card:nth-child(2)::before {
+    background-image: url('./img/33.jpg');
+}
+
+.stat-card:nth-child(3)::before {
+    background-image: url('./img/44.jpg');
+}
+
+.stat-card:nth-child(4)::before {
+    background-image: url('./img/11.jpg');
 }
 
 .stat-card:hover {

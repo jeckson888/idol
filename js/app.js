@@ -50,6 +50,14 @@ class AppState {
         const musicToggle = document.getElementById('musicToggle');
         const musicStatus = document.getElementById('musicStatus');
         const musicControl = document.querySelector('.music-control');
+        const musicListBtn = document.getElementById('musicListBtn');
+        const musicPrevBtn = document.getElementById('musicPrevBtn');
+        const musicNextBtn = document.getElementById('musicNextBtn');
+        const musicUploadInput = document.getElementById('musicUploadInput');
+
+        // 初始化音乐列表
+        this.musicList = this.loadMusicList();
+        this.currentMusicIndex = 0;
 
         // 确保音乐不会自动播放
         bgMusic.pause();
@@ -57,6 +65,7 @@ class AppState {
         musicStatus.textContent = '音乐已暂停';
         musicToggle.innerHTML = '<i class="fas fa-music"></i>';
 
+        // 音乐播放/暂停
         musicToggle.addEventListener('click', () => {
             if (this.isMusicPlaying) {
                 bgMusic.pause();
@@ -64,11 +73,28 @@ class AppState {
                 musicStatus.textContent = '音乐已暂停';
                 musicToggle.innerHTML = '<i class="fas fa-music"></i>';
             } else {
-                bgMusic.play().catch(e => console.log('音乐播放失败:', e));
-                this.isMusicPlaying = true;
-                musicStatus.textContent = '音乐播放中';
-                musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+                this.playCurrentMusic();
             }
+        });
+
+        // 上一首
+        musicPrevBtn.addEventListener('click', () => {
+            this.playPreviousMusic();
+        });
+
+        // 下一首
+        musicNextBtn.addEventListener('click', () => {
+            this.playNextMusic();
+        });
+
+        // 音乐列表按钮
+        musicListBtn.addEventListener('click', () => {
+            this.showMusicList();
+        });
+
+        // 音乐上传
+        musicUploadInput.addEventListener('change', (e) => {
+            this.handleMusicUpload(e.target.files);
         });
 
         // 监听音乐播放状态
@@ -82,6 +108,10 @@ class AppState {
             this.isMusicPlaying = false;
             musicStatus.textContent = '音乐已暂停';
             musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+        });
+
+        bgMusic.addEventListener('ended', () => {
+            this.playNextMusic();
         });
 
         // 添加拖拽功能
@@ -293,7 +323,7 @@ class AppState {
             this.loadProfile();
         } catch (e) {
             console.log('登录失败:', e);
-            // alert('用户名或密码错误！\n\n可用账户（本地演示）：\n用户名：demo_user 密码：123456\n用户名：fan_user 密码：123456');
+            // alert('用户名或密码错误！\n\n可用账户（本地演示）：\n用户名：demo_user 密码：123456');
         }
     }
 
@@ -765,6 +795,175 @@ class AppState {
         
         return date.toLocaleDateString();
     }
+
+    // ========== 音乐管理方法 ==========
+    
+    // 加载音乐列表
+    loadMusicList() {
+        const savedList = localStorage.getItem('musicList');
+        if (savedList) {
+            return JSON.parse(savedList);
+        }
+        // 默认音乐列表
+        return [
+            {
+                id: 'default',
+                title: '默认背景音乐',
+                src: 'img/bg_music.mp3',
+                duration: '00:00',
+                type: 'audio/mpeg'
+            }
+        ];
+    }
+
+    // 保存音乐列表
+    saveMusicList() {
+        localStorage.setItem('musicList', JSON.stringify(this.musicList));
+    }
+
+    // 播放当前音乐
+    playCurrentMusic() {
+        if (this.musicList.length === 0) return;
+        
+        const bgMusic = document.getElementById('bgMusic');
+        const currentMusic = this.musicList[this.currentMusicIndex];
+        
+        bgMusic.src = currentMusic.src;
+        bgMusic.play().catch(e => console.log('音乐播放失败:', e));
+        
+        // 更新音乐状态显示
+        const musicStatus = document.getElementById('musicStatus');
+        musicStatus.textContent = `播放中: ${currentMusic.title}`;
+    }
+
+    // 播放上一首
+    playPreviousMusic() {
+        if (this.musicList.length === 0) return;
+        
+        this.currentMusicIndex = (this.currentMusicIndex - 1 + this.musicList.length) % this.musicList.length;
+        this.playCurrentMusic();
+    }
+
+    // 播放下一首
+    playNextMusic() {
+        if (this.musicList.length === 0) return;
+        
+        this.currentMusicIndex = (this.currentMusicIndex + 1) % this.musicList.length;
+        this.playCurrentMusic();
+    }
+
+    // 显示音乐列表
+    showMusicList() {
+        const modal = document.getElementById('musicListModal');
+        modal.style.display = 'block';
+        this.renderMusicList();
+    }
+
+    // 关闭音乐列表
+    closeMusicList() {
+        const modal = document.getElementById('musicListModal');
+        modal.style.display = 'none';
+    }
+
+    // 渲染音乐列表
+    renderMusicList() {
+        const container = document.getElementById('musicListContainer');
+        
+        if (this.musicList.length === 0) {
+            container.innerHTML = '<div class="empty-state">还没有音乐，请上传一些音乐文件</div>';
+            return;
+        }
+
+        container.innerHTML = this.musicList.map((music, index) => `
+            <div class="music-item ${index === this.currentMusicIndex ? 'active' : ''}">
+                <div class="music-item-info">
+                    <div class="music-item-title">${music.title}</div>
+                    <div class="music-item-duration">${music.duration}</div>
+                </div>
+                <div class="music-item-controls">
+                    <button class="music-item-btn" onclick="app.playMusicByIndex(${index})" title="播放">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="music-item-btn delete" onclick="app.deleteMusic(${index})" title="删除">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // 根据索引播放音乐
+    playMusicByIndex(index) {
+        if (index >= 0 && index < this.musicList.length) {
+            this.currentMusicIndex = index;
+            this.playCurrentMusic();
+            this.renderMusicList();
+        }
+    }
+
+    // 删除音乐
+    deleteMusic(index) {
+        if (!confirm('确定要删除这首音乐吗？')) return;
+        
+        this.musicList.splice(index, 1);
+        this.saveMusicList();
+        
+        // 如果删除的是当前播放的音乐，切换到下一首
+        if (index === this.currentMusicIndex) {
+            if (this.musicList.length > 0) {
+                this.currentMusicIndex = Math.min(index, this.musicList.length - 1);
+                this.playCurrentMusic();
+            } else {
+                // 没有音乐了，停止播放
+                const bgMusic = document.getElementById('bgMusic');
+                bgMusic.pause();
+                this.isMusicPlaying = false;
+                const musicStatus = document.getElementById('musicStatus');
+                musicStatus.textContent = '没有音乐';
+            }
+        } else if (index < this.currentMusicIndex) {
+            this.currentMusicIndex--;
+        }
+        
+        this.renderMusicList();
+    }
+
+    // 处理音乐上传
+    async handleMusicUpload(files) {
+        for (let file of files) {
+            if (file.type.startsWith('audio/')) {
+                try {
+                    // 创建音乐对象
+                    const music = {
+                        id: Date.now() + Math.random(),
+                        title: file.name.replace(/\.[^/.]+$/, ''),
+                        src: URL.createObjectURL(file),
+                        duration: '00:00',
+                        type: file.type,
+                        file: file
+                    };
+
+                    // 添加到音乐列表
+                    this.musicList.push(music);
+                    this.saveMusicList();
+                    
+                    // 如果是第一首上传的音乐，自动播放
+                    if (this.musicList.length === 1) {
+                        this.currentMusicIndex = 0;
+                        this.playCurrentMusic();
+                    }
+                    
+                    // 刷新音乐列表显示
+                    this.renderMusicList();
+                    
+                    console.log('音乐上传成功:', music.title);
+                } catch (error) {
+                    console.error('音乐上传失败:', error);
+                    alert('音乐上传失败: ' + error.message);
+                }
+            }
+        }
+    }
 }
 
 // 全局函数
@@ -815,6 +1014,10 @@ function deletePost(postId) {
     app.deletePost(postId);
 }
 
+function closeMusicList() {
+    app.closeMusicList();
+}
+
 function showMediaModal(src) {
     app.showMediaModal(src);
 }
@@ -823,6 +1026,23 @@ function showMediaModal(src) {
 const app = new AppState();
 document.addEventListener('DOMContentLoaded', () => {
     app.init();
+    
+    // PWA 离线状态检测
+    window.addEventListener('online', () => {
+        console.log('网络已连接');
+        // 可以在这里显示网络已连接的提示
+    });
+    
+    window.addEventListener('offline', () => {
+        console.log('网络已断开');
+        // 可以在这里显示网络已断开的提示
+    });
+    
+    // 检测是否已安装为PWA
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('应用已安装为PWA');
+        // 可以在这里添加PWA特有的功能
+    }
 });
 
 // 添加媒体模态框样式

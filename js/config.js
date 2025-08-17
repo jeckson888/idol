@@ -114,7 +114,7 @@ function exportConfig() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = '偶像日记配置.json';
+            a.download = '再一，再二，再三配置.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

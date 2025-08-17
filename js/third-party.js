@@ -13,8 +13,6 @@ class ThirdPartyServices {
                     this.initLazyLoading();
                 }
 
-    // 粒子效果已移除
-
     
 
     // 初始化动画
@@ -125,7 +123,7 @@ class ThirdPartyServices {
     shareContent(content, url) {
         if (navigator.share) {
             navigator.share({
-                title: '我的偶像日记',
+                title: '再一，再二，再三',
                 text: content,
                 url: url
             });
@@ -138,7 +136,7 @@ class ThirdPartyServices {
     }
 
     // 导出数据
-    exportData(data, filename = '偶像日记数据.json') {
+    exportData(data, filename = '再一，再二，再三数据.json') {
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

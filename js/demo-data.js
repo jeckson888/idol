@@ -6,22 +6,11 @@ const demoData = {
             username: "demo_user",
             email: "demo@example.com",
             password: "123456",
-            nickname: "偶像日记达人",
+            nickname: "再一,再二,再三",
             bio: "热爱记录与偶像的每一个美好瞬间，从2015年开始喜欢易烊千玺，他是我学习的榜样！",
             idol: "易烊千玺",
             avatar: "img/icon.jpg",
             createdAt: "2024-01-01T00:00:00.000Z"
-        },
-        {
-            id: 2,
-            username: "fan_user",
-            email: "fan@example.com",
-            password: "123456",
-            nickname: "追星少女",
-            bio: "TFBOYS忠实粉丝，喜欢他们的音乐和正能量！",
-            idol: "TFBOYS",
-            avatar: "img/icon.jpg",
-            createdAt: "2024-01-15T00:00:00.000Z"
         }
     ],
     posts: [
@@ -92,32 +81,6 @@ const demoData = {
             media: [],
             createdAt: "2024-01-11T20:30:00.000Z",
             likes: 7,
-            comments: []
-        },
-        {
-            id: 6,
-            userId: 2,
-            content: "TFBOYS的新歌太好听了！三小只的声音完美融合，期待他们的演唱会！",
-            media: [
-                {
-                    id: 201,
-                    type: "image",
-                    name: "TFBOYS合照.jpg",
-                    data: "img/5.jpg",
-                    size: 2560000
-                }
-            ],
-            createdAt: "2024-01-10T16:20:00.000Z",
-            likes: 20,
-            comments: []
-        },
-        {
-            id: 7,
-            userId: 2,
-            content: "今天看了TFBOYS的综艺节目，他们真的太可爱了！",
-            media: [],
-            createdAt: "2024-01-09T11:10:00.000Z",
-            likes: 6,
             comments: []
         }
     ]

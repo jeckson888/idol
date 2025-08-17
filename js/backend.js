@@ -7,12 +7,14 @@ class BackendAdapter {
 	}
 
 	resolveProvider() {
-		const mode = (this.config.storage && this.config.storage.provider) || 'auto';
+		// 强制使用LeanCloud远程后端
 		const lc = this.config.leancloud || {};
 		const lcReady = lc.appId && lc.appKey && lc.serverURL;
-		if (mode === 'leancloud') return lcReady ? 'leancloud' : 'local';
-		if (mode === 'local') return 'local';
-		return lcReady ? 'leancloud' : 'local';
+		if (lcReady) {
+			return 'leancloud';
+		}
+		// 如果没有配置LeanCloud，抛出错误
+		throw new Error('LeanCloud配置不完整，请检查config.js中的leancloud配置');
 	}
 
 	// 初始化（仅云端需要）

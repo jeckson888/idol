@@ -140,7 +140,7 @@ class AppState {
         // 鼠标按下事件
         musicControl.addEventListener('mousedown', (e) => {
             // 如果点击的是按钮，不启动拖拽
-            if (e.target.closest('.music-btn')) {
+            if (e.target.closest('.music-btn, .music-list-btn, .music-nav-btn')) {
                 return;
             }
             
@@ -192,7 +192,7 @@ class AppState {
         // 触摸事件支持（移动端）
         musicControl.addEventListener('touchstart', (e) => {
             // 如果点击的是按钮，不启动拖拽
-            if (e.target.closest('.music-btn')) {
+            if (e.target.closest('.music-btn, .music-list-btn, .music-nav-btn')) {
                 return;
             }
             

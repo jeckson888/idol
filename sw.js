@@ -18,12 +18,14 @@ const urlsToCache = [
   './img/3.jpg',
   './img/4.jpg',
   './img/5.jpg',
-  './img/icon-144.jpg',
-  './img/icon-192.jpg',
-  './img/icon-512.jpg',
+  './img/icon-144.png',
+  './img/icon-192.png',
+  './img/icon-512.png',
   './img/icon.jpg',
   './img/default-avatar.jpg',
   './img/bg_music.mp3',
+  './img/screenshot-desktop.png',
+  './img/screenshot-mobile.png',
   './manifest.json'
 ];
 

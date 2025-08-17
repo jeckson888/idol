@@ -10,24 +10,38 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "img/icon-144.jpg",
+      "src": "img/icon-144.png",
       "sizes": "144x144",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "img/icon-192.jpg",
+      "src": "img/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "img/icon-512.jpg",
+      "src": "img/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     }
   ],
   "categories": ["lifestyle", "entertainment"],
-  "lang": "zh-CN"
+  "lang": "zh-CN",
+  "screenshots": [
+    {
+      "src": "img/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "img/screenshot-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
 }
